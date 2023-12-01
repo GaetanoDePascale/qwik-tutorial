@@ -13,7 +13,7 @@ interface ListItem {
   text: string;
 }
 
-export const list: ListItem[] = [];
+export let list: ListItem[] = [];
 
 export const useListLoader = routeLoader$(() => {
   return list;
@@ -31,9 +31,16 @@ export const useAddToListAction = routeAction$(
   }),
 );
 
+export const useRemoveFromAction = routeAction$(
+  (item) => {
+    list = list.filter(i => i.text !== item.text);
+  }
+);
+
 export default component$(() => {
   const list = useListLoader();
-  const action = useAddToListAction();
+  const addAction = useAddToListAction();
+  const removeAction = useRemoveFromAction();
 
   return (
     <>
@@ -51,14 +58,19 @@ export default component$(() => {
         ) : (
           <ul class={styles.list}>
             {list.value.map((item, index) => (
-              <li key={`items-${index}`}>{item.text}</li>
+              <li key={`items-${index}`}>
+                {item.text}
+                <button  class="button-dark" onClick$={() => removeAction.submit(item)}>
+                  Remove item
+                </button>
+              </li>
             ))}
           </ul>
         )}
       </div>
 
       <div class="container container-center">
-        <Form action={action} spaReset>
+        <Form action={addAction} spaReset>
           <input type="text" name="text" required class={styles.input} />{" "}
           <button type="submit" class="button-dark">
             Add item

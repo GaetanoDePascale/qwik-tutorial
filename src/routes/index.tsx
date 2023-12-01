@@ -71,6 +71,14 @@ export default component$(() => {
 						</p>
 					</Infobox>
 					<Infobox>
+						<div q:slot='title' class='icon icon-apps'>
+							Redazione
+						</div>
+						<p>
+							Have a look at the <a href='/redazione'>Redazione</a>.
+						</p>
+					</Infobox>
+					<Infobox>
 						<div q:slot='title' class='icon icon-community'>
 							Community
 						</div>
